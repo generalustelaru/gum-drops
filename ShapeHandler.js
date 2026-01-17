@@ -1,4 +1,4 @@
-export class SpawnGroup {
+export class ShapeHandler {
     constructor(Konva, stage, layerId) {
         this.konva = Konva;
         this.stage = stage;
@@ -19,7 +19,9 @@ export class SpawnGroup {
             this.shapes.set(this.incrementalShapeId++, null);
             console.log(this.shapes.size);
         } else {
-            console.log('custom spawn not implemented');
+            console.log(coordinates);
+            this.shapes.set(this.incrementalShapeId++, null);
+            console.log(this.shapes.size);
         }
     }
 }

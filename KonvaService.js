@@ -1,15 +1,17 @@
 import Konva from 'https://cdn.skypack.dev/konva';
 import { BlindsGroup } from './BlindsGroup.js';
-import { SpawnGroup } from './SpawnGroup.js';
+import { ShapeHandler } from './ShapeHandler.js';
+import { ClickSpawnSurface } from './ClickSpawnSurface.js';
 
 const defaultDimensions = {
     width: 400,
     height: 600
 }
 
-const layers = {
-    shapes: 0,
-    blinds: 1,
+const layerIds = {
+    spawnPad: 0,
+    shapes: 1,
+    blinds: 2,
 }
 
 export class KonvaService {
@@ -23,25 +25,35 @@ export class KonvaService {
         this.stage.add(...[
             new Konva.Layer(),
             new Konva.Layer(),
+            new Konva.Layer(),
         ]);
 
-        this.spawnGroup = new Konva.Group({...defaultDimensions});
-        this.stage.getLayers()[layers.shapes].add(this.spawnGroup);
+        // Cover top and bottom
+        new BlindsGroup(Konva, this.stage, layerIds.blinds);
 
-        new BlindsGroup(Konva, this.stage, layers.blinds);
+        // Draw shapes and handle their lifetime
+        const shapeHandler = new ShapeHandler(Konva, this.stage, layerIds.shapes);
 
-        this.spawnGroup = new SpawnGroup(Konva, this.stage, layers.shapes);
+        // Relay spawn command
+        new ClickSpawnSurface(
+            Konva,
+            this.stage,
+            layerIds.spawnPad,
+            (position) => shapeHandler.spawnShape(position),
+        );
 
+        // Control variables
         this.gravity = 1.6;
         this.spawnRate = 1;
 
+        // Auto-spawn logic
         this.interval = setInterval(() => {
             const delay = 1000 / this.spawnRate;
             let spawnTime = 0;
 
             for (let i = 0; i < this.spawnRate; i++) {
                 setTimeout(() => {
-                    this.spawnGroup.spawnShape();
+                    shapeHandler.spawnShape();
                 }, spawnTime);
                 spawnTime += delay;
             }

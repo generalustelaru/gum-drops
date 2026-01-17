@@ -4,7 +4,7 @@ export class BlindsGroup {
         const width = stage.width();
         const height = stage.height();
 
-        this.node = new Konva.Group({
+        const group = new Konva.Group({
             width,
             height,
         });
@@ -27,8 +27,8 @@ export class BlindsGroup {
             y: stage.height() - blindHeight,
         });
 
-        this.node.add(topBlind, bottomBlind);
+        group.add(topBlind, bottomBlind);
 
-        stage.getLayers()[layerId].add(this.node);
+        stage.getLayers()[layerId].add(group);
     };
 }
