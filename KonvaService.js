@@ -15,14 +15,10 @@ const layers = {
 export class KonvaService {
     constructor() {
 
-        // const { width, height, scale } = this.calculateDimensions();
-
         this.stage = new Konva.Stage({
             container: 'konva-container',
             ...defaultDimensions,
         });
-
-        // this.stage.scale({ x: scale, y: scale });
 
         this.stage.add(...[
             new Konva.Layer(),
