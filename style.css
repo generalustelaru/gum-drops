@@ -1,0 +1,43 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    margin-top: 50px;
+    width: 100%;
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#konva-container {
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    border-color: var(--pico-color);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.bar {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
+    font-weight: 500;
+
+    & input {
+        max-width: 100px;
+    }
+}

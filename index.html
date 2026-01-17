@@ -7,25 +7,35 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fuchsia.min.css"
     >
+    <link rel="stylesheet" href="style.css">
     <script src="index.js"></script>
     <title>Gum Drops</title>
 </head>
 <body>
-    <div class="bar">
-        <div class="swatch" id="shape-count">0</div>
-        <div class="swatch" id="surface-value">0</div>
-    </div>
-    <div id="konva-container">Hi mom</div>
-    <div class="bar">
-        <div class="button-group">
-            <button id="increase-spawn-rate">+</button>
-            <button id="decrease-spawn-rate">-</button>
-            <div class="description">Shapes per Second</div>
+    <div class="content">
+        <h2>Gum Drops</h2>
+        <div class="bar">
+            <div class="swatch">
+                <input type="number" id="shape-count" value="0" disabled>
+                <div class="description">Population</div>
+            </div>
+            <div class="swatch">
+                <input type="number" id="surface-value" value="0" disabled>
+                <div class="description">Available Surface (px²)</div>
+            </div>
         </div>
-        <div class="button-group">
-            <button id="increase-gravity">+</button>
-            <button id="decrease-gravity">-</button>
-            <div class="description">Gravity Value</div>
+        <div id="konva-container"></div>
+        <div class="bar">
+            <div class="button-group">
+                <button id="increase-spawn-rate">+</button>
+                <button id="decrease-spawn-rate">-</button>
+                <div class="description">Spawn Rate</div>
+            </div>
+            <div class="button-group">
+                <button id="increase-gravity">+</button>
+                <button id="decrease-gravity">-</button>
+                <div class="description">Gravity</div>
+            </div>
         </div>
     </div>
 </body>
