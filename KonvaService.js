@@ -17,6 +17,10 @@ const layerIds = {
 export class KonvaService {
     constructor() {
 
+         // Control variables
+        this.gravity = 1.6;
+        this.spawnRate = 1;
+
         this.stage = new Konva.Stage({
             container: 'konva-container',
             ...defaultDimensions,
@@ -28,23 +32,19 @@ export class KonvaService {
             new Konva.Layer(),
         ]);
 
-        // Cover top and bottom
+        // Covers top and bottom
         new BlindsGroup(Konva, this.stage, layerIds.blinds);
 
-        // Draw shapes and handle their lifetime
+        // Draws shapes and handle their lifetime
         const shapeHandler = new ShapeHandler(Konva, this.stage, layerIds.shapes);
 
-        // Relay spawn command
+        // Relays spawn command
         new ClickSpawnSurface(
             Konva,
             this.stage,
             layerIds.spawnPad,
-            (position) => shapeHandler.spawnShape(position),
+            (position) => shapeHandler.spawnShape(this.gravity, position),
         );
-
-        // Control variables
-        this.gravity = 1.6;
-        this.spawnRate = 1;
 
         // Auto-spawn logic
         this.interval = setInterval(() => {
@@ -53,7 +53,7 @@ export class KonvaService {
 
             for (let i = 0; i < this.spawnRate; i++) {
                 setTimeout(() => {
-                    shapeHandler.spawnShape();
+                    shapeHandler.spawnShape(this.gravity);
                 }, spawnTime);
 
                 spawnTime += delay;

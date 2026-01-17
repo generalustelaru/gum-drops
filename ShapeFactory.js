@@ -34,24 +34,35 @@ const colors = [
   '#FF6347'  // Tomato (back to red)
 ];
 
-export class Shape {
-    constructor(Konva, stage, coordinates) {
-        const { type, kind } = types[Math.floor(Math.random() * types.length)];
+export class ShapeFactory {
+    constructor(Konva, stage, layer) {
+        this.Konva = Konva;
+        this.stage = stage;
+        this.layer = layer;
+        console.log({stage: typeof this.stage})
+    }
 
+    produceShapeObject(shapeId, coordinates, gravity) {
+        const { type, kind } = types[Math.floor(Math.random() * types.length)];
+        console.log({shapeId, coordinates, gravity});
         const node = (() => {
             switch (type) {
                 case 'circular':
-                    return this.getEllipse(Konva, kind, stage.width(), coordinates);
+                    return this.getEllipse(Konva, kind, this.stage.width(), coordinates);
                 case 'polygonal':
-                    return this.getRegularPolygon(Konva, kind, stage.width(), coordinates);
+                    return this.getRegularPolygon(Konva, kind, this.stage.width(), coordinates);
                 case 'star':
-                    return this.getStar(Konva, kind, stage.width(), coordinates);
+                    return this.getStar(Konva, kind, this.stage.width(), coordinates);
                 default:
                     throw new Error(`Cannot determine type: [${type}]`);
             }
         })();
 
-        return node;
+        return {
+            shapeId,
+            node,
+            animation: this.getAnimation(node, gravity, this.stage.height()),
+        }
     }
 
     getEllipse(Konva, kind, width, coordinates) {
@@ -105,5 +116,25 @@ export class Shape {
 
     getValidX(x, width) {
         return Math.max(Math.min(x, width - 25), 25)
+    }
+
+    getAnimation(node, gravity, bottomEdge) {
+        let velocity = 0; // Initial velocity
+
+        const animation = new Konva.Animation((frame) => {
+            // Update velocity based on acceleration
+            velocity += gravity * (frame.timeDiff / 1000);
+
+            // Update position
+            node.y(node.y() + velocity * (frame.timeDiff / 1000));
+
+            // Stop when reaching bottom
+            if (node.y() >= bottomEdge) {
+                animation.stop();
+                // Handle node reaching bottom
+            }
+        }, this.layer);
+
+        return animation;
     }
 }
