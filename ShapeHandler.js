@@ -1,3 +1,5 @@
+import { Shape } from "./Shape.js";
+
 export class ShapeHandler {
     constructor(Konva, stage, layerId) {
         this.konva = Konva;
@@ -15,13 +17,15 @@ export class ShapeHandler {
     }
 
     spawnShape(coordinates) {
-        if (!coordinates) {
-            this.shapes.set(this.incrementalShapeId++, null);
-            console.log(this.shapes.size);
-        } else {
-            console.log(coordinates);
-            this.shapes.set(this.incrementalShapeId++, null);
-            console.log(this.shapes.size);
-        }
+        const shape = new Shape(
+            this.konva,
+            this.stage,
+            coordinates || { x: Math.floor(Math.random() * this.groupWidth), y: 0 }
+        );
+
+        this.shapes.set(this.incrementalShapeId++, shape);
+        // this might prove innefficient if the spawn rate is very fast
+        // TODO: pre-spawn shapes, add them in batches, and only activate them here (visibility, animation)
+        this.group.add(shape);
     }
 }
