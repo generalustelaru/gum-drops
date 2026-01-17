@@ -10,5 +10,8 @@
     "Konva"
   ],
   "author": "GeneraluStelaru",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "konva": "^10.2.0"
+  }
 }
