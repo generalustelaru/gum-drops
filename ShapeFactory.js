@@ -122,8 +122,8 @@ export class ShapeFactory {
         let velocity = 0; // Initial velocity
 
         const animation = new Konva.Animation((frame) => {
-            // Update velocity based on acceleration
-            velocity += gravity * (frame.timeDiff / 1000);
+            // Update velocity based on gravitational acceleration
+            velocity += gravity.value * (frame.timeDiff / 1000);
 
             // Update position
             node.y(node.y() + velocity * (frame.timeDiff / 1000));
@@ -131,7 +131,7 @@ export class ShapeFactory {
             // Stop when reaching bottom
             if (node.y() >= bottomEdge) {
                 animation.stop();
-                // Handle node reaching bottom
+                // TODO: Handle node reaching bottom
             }
         }, this.layer);
 
