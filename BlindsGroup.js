@@ -1,8 +1,6 @@
 export class BlindsGroup {
 
-    constructor(
-        Konva, stage, layerId,
-    ) {
+    constructor(Konva, stage, layerId) {
         const width = stage.width();
         const height = stage.height();
 
@@ -17,6 +15,7 @@ export class BlindsGroup {
             width,
             height: blindHeight,
             fill: 'red',
+            opacity: 0.3,
         }
 
         const topBlind = new Konva.Rect({
