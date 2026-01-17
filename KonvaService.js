@@ -55,6 +55,7 @@ export class KonvaService {
                 setTimeout(() => {
                     shapeHandler.spawnShape();
                 }, spawnTime);
+
                 spawnTime += delay;
             }
 

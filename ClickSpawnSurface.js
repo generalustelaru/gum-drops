@@ -1,10 +1,13 @@
 export class ClickSpawnSurface {
 
     constructor(Konva, stage, layerId, positionCallback) {
-        const width = stage.width();
-        const height = stage.height()
-        const group = new Konva.Group({ width, height });
-        const surface = new Konva.Rect({ width, height });
+        const dimensions = {
+            width: stage.width(),
+            height: stage.height(),
+        }
+
+        const group = new Konva.Group(dimensions);
+        const surface = new Konva.Rect(dimensions);
 
         group.add(surface);
         stage.getLayers()[layerId].add(group);
