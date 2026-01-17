@@ -1,1 +1,1 @@
-alert('Hi Mom');
+console.log('Nothing happening');
