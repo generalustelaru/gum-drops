@@ -20,8 +20,12 @@ body {
 
 #konva-container {
     flex: 1;
-    height: calc(100vh - 300px); /* Subtracts .bar heights*/
-    aspect-ratio: 800 / 1200;
+    /* height: calc(100vh - 300px); Subtracts .bar heights */
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 600px;
+    aspect-ratio: 400 / 600;
 
     border-color: var(--pico-color);
     border-width: 1px;
