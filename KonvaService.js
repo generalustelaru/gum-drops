@@ -18,7 +18,7 @@ export class KonvaService {
     constructor() {
 
          // Control variables
-        this.gravity = { value: 2 }; // gravity must be passed as a reference to alter animations mid-run
+        this.gravity = { value: 5 }; // gravity must be passed as a reference to alter animations mid-run
         this.spawnRate = 1;
 
         this.stage = new Konva.Stage({
@@ -74,13 +74,13 @@ export class KonvaService {
     }
 
     increaseGravity() {
-        this.gravity.value += 0.5;
+        this.gravity.value += 1;
     }
 
     decreaseGravity() {
-        if (this.gravity.value  == 0.5)
+        if (this.gravity.value == 0)
             return;
 
-        this.gravity.value -= 0.5;
+        this.gravity.value -= 1;
     }
 }
