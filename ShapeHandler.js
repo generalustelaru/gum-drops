@@ -35,7 +35,7 @@ export class ShapeHandler {
         );
 
         this.shapes.set(shapeId, shapeData);
-        // this might prove innefficient if the spawn rate is very fast
+        // this might prove inefficient if the spawn rate is very fast
         // TODO: pre-spawn shapes, add them in batches, and only activate them here (visibility, animation)
         this.group.add(shapeData.node);
         shapeData.animation.start();
@@ -44,10 +44,10 @@ export class ShapeHandler {
     destroyShape(shapeId) {
         const data = this.shapes.get(shapeId);
 
-        if (!data) return;
-
-        data.animation.stop();
-        data.node.destroy();
-        this.shapes.delete(shapeId);
+        if (data) {
+            data.animation.stop();
+            data.node.destroy();
+            this.shapes.delete(shapeId);
+        }
     }
 }

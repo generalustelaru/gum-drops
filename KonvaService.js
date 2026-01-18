@@ -24,7 +24,7 @@ export class KonvaService {
             ...defaultDimensions,
         });
 
-        this.stage.add(...[ new Konva.Layer(), new Konva.Layer() ]);
+        this.stage.add(new Konva.Layer(), new Konva.Layer());
         const [ creationLayer, shapesLayer ] = this.stage.getLayers();
 
         // Draws shapes and handle their lifetime
@@ -84,11 +84,11 @@ export class KonvaService {
     }
 
     decreaseRate() {
-        if (this.spawnRate == 0)
-            return;
 
-        this.spawnRate -= 1;
-        this.createEvent('spawnRate', { value: this.spawnRate });
+        if (this.spawnRate > 0) {
+            this.spawnRate -= 1;
+            this.createEvent('spawnRate', { value: this.spawnRate });
+        }
     }
 
     increaseGravity() {
@@ -97,11 +97,11 @@ export class KonvaService {
     }
 
     decreaseGravity() {
-        if (this.gravity.acceleration == 0)
-            return;
 
-        this.gravity.acceleration -= 1;
-        this.createEvent('gravity', { value: this.gravity.acceleration });
+        if (this.gravity.acceleration > 0) {
+            this.gravity.acceleration -= 1;
+            this.createEvent('gravity', { value: this.gravity.acceleration });
+        }
     }
 
     createEvent(type, detailObject) {

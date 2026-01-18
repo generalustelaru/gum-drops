@@ -68,7 +68,8 @@ export class ShapeFactory {
             velocity += gravity.acceleration * frameSync;
             shape.y(shape.y() + velocity * frameSync);
 
-            if (shape.y() > this.stage.height() + 25) this.destroy(shapeId);
+            if (shape.y() > this.stage.height() + 25)
+                this.destroy(shapeId);
 
         }, this.layer);
 
