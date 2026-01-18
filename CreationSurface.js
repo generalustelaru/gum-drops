@@ -1,4 +1,4 @@
-export class ClickSpawnSurface {
+export class CreationSurface {
 
     constructor(Konva, stage, layerId, positionCallback) {
         const dimensions = {

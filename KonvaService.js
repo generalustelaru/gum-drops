@@ -1,7 +1,6 @@
 import Konva from 'https://cdn.skypack.dev/konva';
-import { BlindsGroup } from './BlindsGroup.js';
 import { ShapeHandler } from './ShapeHandler.js';
-import { ClickSpawnSurface } from './ClickSpawnSurface.js';
+import { CreationSurface } from './CreationSurface.js';
 
 const defaultDimensions = {
     width: 400,
@@ -9,7 +8,7 @@ const defaultDimensions = {
 }
 
 const layerIds = {
-    spawnPad: 0,
+    creation: 0,
     shapes: 1,
 }
 
@@ -26,7 +25,7 @@ export class KonvaService {
         });
 
         this.stage.add(...[
-            new Konva.Layer(), // spawnPad
+            new Konva.Layer(), // creation
             new Konva.Layer(), // shapes
         ]);
 
@@ -34,10 +33,10 @@ export class KonvaService {
         const shapeHandler = new ShapeHandler(Konva, this.stage, layerIds.shapes);
 
         // Relays spawn command
-        new ClickSpawnSurface(
+        new CreationSurface(
             Konva,
             this.stage,
-            layerIds.spawnPad,
+            layerIds.creation,
             (position) => shapeHandler.spawnShape(this.gravity, position),
         );
 
