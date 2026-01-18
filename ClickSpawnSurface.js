@@ -12,7 +12,7 @@ export class ClickSpawnSurface {
         group.add(surface);
         stage.getLayers()[layerId].add(group);
 
-        surface.on('click', () => {
+        surface.on('click tap', () => {
             positionCallback(stage.getPointerPosition());
         });
     }
