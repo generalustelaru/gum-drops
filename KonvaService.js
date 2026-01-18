@@ -5,13 +5,12 @@ import { ClickSpawnSurface } from './ClickSpawnSurface.js';
 
 const defaultDimensions = {
     width: 400,
-    height: 600
+    height: 400,
 }
 
 const layerIds = {
     spawnPad: 0,
     shapes: 1,
-    blinds: 2,
 }
 
 export class KonvaService {
@@ -27,13 +26,9 @@ export class KonvaService {
         });
 
         this.stage.add(...[
-            new Konva.Layer(),
-            new Konva.Layer(),
-            new Konva.Layer(),
+            new Konva.Layer(), // spawnPad
+            new Konva.Layer(), // shapes
         ]);
-
-        // Covers top and bottom
-        new BlindsGroup(Konva, this.stage, layerIds.blinds);
 
         // Draws shapes and handle their lifetime
         const shapeHandler = new ShapeHandler(Konva, this.stage, layerIds.shapes);
