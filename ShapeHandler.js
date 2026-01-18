@@ -14,14 +14,23 @@ export class ShapeHandler {
         stage.getLayers()[layerId].add(this.group);
         this.incrementalShapeId = 0;
         this.shapes = new Map();
-        this.factory = new ShapeFactory(Konva, stage, stage.getLayers()[layerId])
+        this.factory = new ShapeFactory(
+            Konva,
+            stage,
+            stage.getLayers()[layerId],
+            (shapeId) => this.destroyShape(shapeId),
+        );
+
+        setInterval(() => {
+            window.dispatchEvent(new CustomEvent('population', { detail: { count: this.shapes.size } }));
+        }, 500);
     }
 
     spawnShape(gravity, coordinates) {
         const shapeId = this.incrementalShapeId++;
-        const shapeData = this.factory.produceShapeObject(
+        const shapeData = this.factory.produceShapeData(
             shapeId,
-            coordinates || { x: Math.floor(Math.random() * this.groupWidth), y: 0 },
+            coordinates || { x: Math.floor(Math.random() * this.groupWidth), y: -50 },
             gravity,
         );
 
@@ -30,5 +39,15 @@ export class ShapeHandler {
         // TODO: pre-spawn shapes, add them in batches, and only activate them here (visibility, animation)
         this.group.add(shapeData.node);
         shapeData.animation.start();
+    }
+
+    destroyShape(shapeId) {
+        const data = this.shapes.get(shapeId);
+
+        if (!data) return;
+
+        data.animation.stop();
+        data.node.destroy();
+        this.shapes.delete(shapeId);
     }
 }

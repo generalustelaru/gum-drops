@@ -15,3 +15,7 @@ document.querySelector('#increase-gravity').addEventListener('click', () => {
 document.querySelector('#decrease-gravity').addEventListener('click', () => {
     konva.decreaseGravity();
 });
+
+window.addEventListener('population', (event) => {
+    document.querySelector('#shape-count').value = event.detail.count || 0;
+});

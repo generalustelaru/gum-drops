@@ -35,17 +35,17 @@ const colors = [
 ];
 
 export class ShapeFactory {
-    constructor(Konva, stage, layer) {
+    constructor(Konva, stage, layer, destructionCallback) {
         this.Konva = Konva;
         this.stage = stage;
         this.layer = layer;
-        console.log({stage: typeof this.stage})
+        this.destroy = destructionCallback;
     }
 
-    produceShapeObject(shapeId, coordinates, gravity) {
+    produceShapeData(shapeId, coordinates, gravity) {
         const { type, kind } = types[Math.floor(Math.random() * types.length)];
-        console.log({shapeId, coordinates, gravity});
-        const node = (() => {
+
+        const shape = (() => {
             switch (type) {
                 case 'circular':
                     return this.getEllipse(Konva, kind, this.stage.width(), coordinates);
@@ -58,10 +58,23 @@ export class ShapeFactory {
             }
         })();
 
+        shape.on('click tap', () => { this.destroy(shapeId) });
+
+        let velocity = 0;
+
+        const fallAnimation = new Konva.Animation(frame => {
+            const frameSync = frame.timeDiff / 1000;
+
+            velocity += gravity.acceleration * frameSync;
+            shape.y(shape.y() + velocity * frameSync);
+
+            if (shape.y() > this.stage.height() + 25) this.destroy(shapeId);
+
+        }, this.layer);
+
         return {
-            shapeId,
-            node,
-            animation: this.getAnimation(node, gravity, this.stage.height()),
+            node: shape,
+            animation: fallAnimation,
         }
     }
 
@@ -94,6 +107,7 @@ export class ShapeFactory {
     }
 
     getStar(Konva, kind, width, coordinates) {
+
         return new Konva.Star({
             fill: this.getColor(),
             x: this.getValidX(coordinates.x, width),
@@ -111,30 +125,10 @@ export class ShapeFactory {
     }
 
     getColor() {
-        return colors[Math.floor(Math.random() * colors.length)];
+        return colors[Math.round(Math.random() * colors.length - 1)];
     }
 
     getValidX(x, width) {
         return Math.max(Math.min(x, width - 25), 25)
-    }
-
-    getAnimation(node, gravity, bottomEdge) {
-        let velocity = 0; // Initial velocity
-
-        const animation = new Konva.Animation((frame) => {
-            // Update velocity based on gravitational acceleration
-            velocity += gravity.value * (frame.timeDiff / 1000);
-
-            // Update position
-            node.y(node.y() + velocity * (frame.timeDiff / 1000));
-
-            // Stop when reaching bottom
-            if (node.y() >= bottomEdge) {
-                animation.stop();
-                // TODO: Handle node reaching bottom
-            }
-        }, this.layer);
-
-        return animation;
     }
 }
