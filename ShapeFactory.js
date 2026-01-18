@@ -119,7 +119,7 @@ export class ShapeFactory {
                 case 'hexagram': return 6;
                 default: return 8;
             } })(),
-            innerRadius: 13,
+            innerRadius: kind == 'three-point' ? 6 : 13,
             outerRadius: 25,
         });
     }
