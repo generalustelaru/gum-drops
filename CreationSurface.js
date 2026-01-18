@@ -1,6 +1,6 @@
 export class CreationSurface {
 
-    constructor(Konva, stage, layerId, positionCallback) {
+    constructor(Konva, stage, layer, positionCallback) {
         const dimensions = {
             width: stage.width(),
             height: stage.height(),
@@ -10,7 +10,7 @@ export class CreationSurface {
         const surface = new Konva.Rect(dimensions);
 
         group.add(surface);
-        stage.getLayers()[layerId].add(group);
+        layer.add(group);
 
         surface.on('click tap', () => {
             positionCallback(stage.getPointerPosition());

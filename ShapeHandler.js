@@ -1,7 +1,7 @@
 import { ShapeFactory } from "./ShapeFactory.js";
 
 export class ShapeHandler {
-    constructor(Konva, stage, layerId) {
+    constructor(Konva, stage, layer) {
         this.konva = Konva;
         this.stage = stage;
         this.groupWidth = stage.width();
@@ -11,13 +11,13 @@ export class ShapeHandler {
             height: this.groupHeight,
         });
 
-        stage.getLayers()[layerId].add(this.group);
+        layer.add(this.group);
         this.incrementalShapeId = 0;
         this.shapes = new Map();
         this.factory = new ShapeFactory(
             Konva,
             stage,
-            stage.getLayers()[layerId],
+            layer,
             (shapeId) => this.destroyShape(shapeId),
         );
 

@@ -7,11 +7,6 @@ const defaultDimensions = {
     height: 400,
 }
 
-const layerIds = {
-    creation: 0,
-    shapes: 1,
-}
-
 export class KonvaService {
     constructor() {
 
@@ -24,24 +19,34 @@ export class KonvaService {
             ...defaultDimensions,
         });
 
-        this.stage.add(...[
-            new Konva.Layer(), // creation
-            new Konva.Layer(), // shapes
-        ]);
+        this.stage.add(...[ new Konva.Layer(), new Konva.Layer() ]);
+        const [ creationLayer, shapesLayer ] = this.stage.getLayers();
 
         // Draws shapes and handle their lifetime
-        const shapeHandler = new ShapeHandler(Konva, this.stage, layerIds.shapes);
+        const shapeHandler = new ShapeHandler(Konva, this.stage, shapesLayer);
 
-        // Relays spawn command
+        // Catches click and orders a spawn
         new CreationSurface(
             Konva,
             this.stage,
-            layerIds.creation,
+            creationLayer,
             (position) => shapeHandler.spawnShape(this.gravity, position),
         );
 
-        // Auto-spawn logic
-        this.interval = setInterval(() => {
+        // Auto-logic
+        setInterval(() => {
+            // Estimate uncovered space
+            const sampleOffset = 25;
+            const columns = Math.floor(defaultDimensions.width / sampleOffset);
+            const rows = Math.floor(defaultDimensions.height / sampleOffset);
+
+            for (let column = 0; column < columns; column += 1) {
+                for (let row = 0; row < rows; row += 1) {
+                    const samplePoint = { x: column * sampleOffset, y: row * sampleOffset }
+                    const intersection = stage.getLayers()[layerIds.shapes].getIntersection(samplePoint);
+                }
+            }
+
             const delay = 1000 / this.spawnRate;
             let spawnTime = 0;
 
