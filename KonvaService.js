@@ -36,26 +36,38 @@ export class KonvaService {
         // Auto-logic
         setInterval(() => {
             // Estimate uncovered space
-            const sampleOffset = 25;
-            const columns = Math.floor(defaultDimensions.width / sampleOffset);
-            const rows = Math.floor(defaultDimensions.height / sampleOffset);
+            const { width, height } = defaultDimensions;
+
+            // chunkSize deermines precision tolerance. Higher numbers means faster scanning and decresed accuracy.
+            const chunkSize = 25;
+            const columns = Math.floor(width / chunkSize);
+            const rows = Math.floor(height / chunkSize);
+
+            let emptyArea = width * height;
 
             for (let column = 0; column < columns; column += 1) {
                 for (let row = 0; row < rows; row += 1) {
-                    const samplePoint = { x: column * sampleOffset, y: row * sampleOffset }
-                    const intersection = stage.getLayers()[layerIds.shapes].getIntersection(samplePoint);
+                    const centerDrift = chunkSize / 2;
+                    const samplePoint = { x: column * chunkSize + centerDrift, y: row * chunkSize + centerDrift }
+                    const intersection = shapesLayer.getIntersection(samplePoint);
+
+                    if (intersection)
+                        emptyArea -= chunkSize ** 2;
                 }
             }
 
-            const delay = 1000 / this.spawnRate;
-            let spawnTime = 0;
+            window.dispatchEvent(new CustomEvent('freeSpace', { detail: { area: emptyArea } }));
+
+            // Spawn shapes evenly across the timespan of a second
+            const timeSegment = 1000 / this.spawnRate;
+            let delay = 0;
 
             for (let i = 0; i < this.spawnRate; i++) {
                 setTimeout(() => {
                     shapeHandler.spawnShape(this.gravity);
-                }, spawnTime);
+                }, delay);
 
-                spawnTime += delay;
+                delay += timeSegment;
             }
 
         }, 1000);
