@@ -104,6 +104,7 @@ export class ShapeFactory {
                 default: return 8;
             } })(),
             radius: 25,
+            cornerRadius: 3
         });
     }
 
