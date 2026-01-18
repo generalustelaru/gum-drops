@@ -11,6 +11,7 @@ body {
 
 .content {
     width: 100%;
+    min-width: 400px;
     height: 100vh;
 
     display: flex;
@@ -21,7 +22,6 @@ body {
 #konva-container {
     flex: 1;
     width: 100%;
-    height: 100%;
     max-width: 400px;
     max-height: 400px;
     aspect-ratio: 400 / 400;
@@ -43,6 +43,12 @@ body {
     justify-content: space-between;
     text-align: center;
     font-weight: 500;
+}
+
+@media (min-width: 1020px) {
+    .bar {
+        height: 120px;
+    }
 }
 
 input {
