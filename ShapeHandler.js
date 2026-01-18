@@ -22,7 +22,7 @@ export class ShapeHandler {
         );
 
         setInterval(() => {
-            window.dispatchEvent(new CustomEvent('population', { detail: { count: this.shapes.size } }));
+            window.dispatchEvent(new CustomEvent('population', { detail: { value: this.shapes.size } }));
         }, 500);
     }
 

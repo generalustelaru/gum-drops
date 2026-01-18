@@ -17,15 +17,17 @@ document.querySelector('#decrease-gravity').addEventListener('click', () => {
 });
 
 window.addEventListener('population', (event) => {
-    document.querySelector('#shape-count').value = event.detail.count || 0;
+    document.querySelector('#shape-count').value = event.detail.value || 0;
 });
-window.addEventListener('freeSpace', (event) => {
-    document.querySelector('#surface-area').value = event.detail.area || 0;
+
+window.addEventListener('surfaceArea', (event) => {
+    document.querySelector('#surface-area').value = event.detail.value || 0;
 });
 
 window.addEventListener('spawnRate', (event) => {
     document.querySelector('#spawn-rate').value = event.detail.value || 0;
 });
+
 window.addEventListener('gravity', (event) => {
     document.querySelector('#gravity').value = event.detail.value || 0;
 });

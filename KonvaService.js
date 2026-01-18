@@ -61,7 +61,7 @@ export class KonvaService {
                 }
             }
 
-            this.createEvent('freeSpace', { area: emptyArea });
+            this.createEvent('surfaceArea', { value: emptyArea });
 
             // Spawn shapes evenly across the timespan of a second
             const timeSegment = 1000 / this.spawnRate;
@@ -79,12 +79,13 @@ export class KonvaService {
     }
 
     increaseRate() {
-        this.spawnRate += 1;
-        this.createEvent('spawnRate', { value: this.spawnRate });
+        if (this.spawnRate < 10) {
+            this.spawnRate += 1;
+            this.createEvent('spawnRate', { value: this.spawnRate });
+        }
     }
 
     decreaseRate() {
-
         if (this.spawnRate > 0) {
             this.spawnRate -= 1;
             this.createEvent('spawnRate', { value: this.spawnRate });
@@ -92,12 +93,13 @@ export class KonvaService {
     }
 
     increaseGravity() {
-        this.gravity.acceleration += 1;
-        this.createEvent('gravity', { value: this.gravity.acceleration });
+        if (this.gravity.acceleration < 100) {
+            this.gravity.acceleration += 1;
+            this.createEvent('gravity', { value: this.gravity.acceleration });
+        }
     }
 
     decreaseGravity() {
-
         if (this.gravity.acceleration > 0) {
             this.gravity.acceleration -= 1;
             this.createEvent('gravity', { value: this.gravity.acceleration });
