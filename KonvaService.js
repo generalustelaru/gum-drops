@@ -14,6 +14,11 @@ export class KonvaService {
         this.gravity = { acceleration: 19 }; // gravity must be passed as a reference to alter animations mid-run
         this.spawnRate = 1;
 
+        setTimeout(() => {
+            this.createEvent('gravity', { value: this.gravity.acceleration });
+            this.createEvent('spawnRate', { value: this.spawnRate });
+        }, 500);
+
         this.stage = new Konva.Stage({
             container: 'konva-container',
             ...defaultDimensions,
@@ -56,7 +61,7 @@ export class KonvaService {
                 }
             }
 
-            window.dispatchEvent(new CustomEvent('freeSpace', { detail: { area: emptyArea } }));
+            this.createEvent('freeSpace', { area: emptyArea });
 
             // Spawn shapes evenly across the timespan of a second
             const timeSegment = 1000 / this.spawnRate;
@@ -75,6 +80,7 @@ export class KonvaService {
 
     increaseRate() {
         this.spawnRate += 1;
+        this.createEvent('spawnRate', { value: this.spawnRate });
     }
 
     decreaseRate() {
@@ -82,10 +88,12 @@ export class KonvaService {
             return;
 
         this.spawnRate -= 1;
+        this.createEvent('spawnRate', { value: this.spawnRate });
     }
 
     increaseGravity() {
         this.gravity.acceleration += 1;
+        this.createEvent('gravity', { value: this.gravity.acceleration });
     }
 
     decreaseGravity() {
@@ -93,5 +101,10 @@ export class KonvaService {
             return;
 
         this.gravity.acceleration -= 1;
+        this.createEvent('gravity', { value: this.gravity.acceleration });
+    }
+
+    createEvent(type, detailObject) {
+        window.dispatchEvent(new CustomEvent(type, { detail: detailObject }));
     }
 }
