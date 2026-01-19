@@ -36,7 +36,7 @@ export class KonvaService {
             Konva,
             this.stage,
             creationLayer,
-            (position) => shapeHandler.spawnShape(this.gravity, position),
+            (position) => shapeHandler.releaseShape(this.gravity, position),
         );
 
         // Auto-logic
@@ -70,7 +70,7 @@ export class KonvaService {
 
             for (let i = 0; i < this.spawnRate; i++) {
                 setTimeout(() => {
-                    shapeHandler.spawnShape(this.gravity);
+                    shapeHandler.releaseShape(this.gravity);
                 }, delay);
 
                 delay += timeSegment;
@@ -94,7 +94,7 @@ export class KonvaService {
     }
 
     increaseGravity() {
-        if (this.gravity.acceleration < 100) {
+        if (this.gravity.acceleration < 99) {
             this.gravity.acceleration += 1;
             this.createEvent('gravity', { value: this.gravity.acceleration });
         }

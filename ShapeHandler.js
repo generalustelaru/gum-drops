@@ -12,42 +12,82 @@ export class ShapeHandler {
         });
 
         layer.add(this.group);
+
         this.incrementalShapeId = 0;
-        this.shapes = new Map();
+
+        this.shapeReserve = [];
+
+        this.activeShapes = new Map();
         this.factory = new ShapeFactory(
             Konva,
             stage,
             layer,
             (shapeId) => this.destroyShape(shapeId),
         );
-
         setInterval(() => {
-            window.dispatchEvent(new CustomEvent('population', { detail: { value: this.shapes.size } }));
-        }, 500);
+            window.dispatchEvent(new CustomEvent('population', { detail: { value: this.activeShapes.size } }));
+        }, 1000);
     }
 
-    spawnShape(gravity, coordinates) {
-        const shapeId = this.incrementalShapeId++;
-        const shapeData = this.factory.produceShapeData(
-            shapeId,
-            coordinates || { x: Math.floor(Math.random() * this.groupWidth), y: -50 },
-            gravity,
-        );
+    // Konva.Group.add() is an expensive operation,
+    // Hence, if possible, adding an array of nodes in one go is prefferable to individual calls.
+    spawnShapes(gravity) {
+        const batch = [];
 
-        this.shapes.set(shapeId, shapeData);
-        // this might prove inefficient if the spawn rate is very fast
-        // TODO: pre-spawn shapes, add them in batches, and only activate them here (visibility, animation)
-        this.group.add(shapeData.node);
+        for (let i = 0; i < 50; i++) {
+            const shapeId = this.incrementalShapeId++;
+            const shapeData = this.factory.produceShapeData(
+                shapeId,
+                { x: Math.floor(Math.random() * this.groupWidth), y: -50 },
+                gravity,
+            );
+            batch.push({shapeId, shapeData});
+        }
+
+        this.group.add(...batch.map(storedShape => storedShape.shapeData.node));
+
+        this.shapeReserve.push(...batch);
+    }
+
+    releaseShape(gravity, coordinates) {
+
+        if (this.shapeReserve.length < 10)
+            this.spawnShapes(gravity);
+
+        if (
+            (gravity.acceleration == 0 && !coordinates)
+            || this.activeShapes.size > 200
+        ) {
+            return;
+        }
+
+        const { shapeId, shapeData } = (() => {
+            if (coordinates) {
+                const shapeId = this.incrementalShapeId++;
+                const shapeData = this.factory.produceShapeData(
+                    shapeId,
+                    coordinates,
+                    gravity,
+                );
+                this.group.add(shapeData.node);
+
+                return { shapeId, shapeData }
+            }
+
+            return this.shapeReserve.shift();
+        })();
+
+        this.activeShapes.set(shapeId, shapeData);
         shapeData.animation.start();
     }
 
     destroyShape(shapeId) {
-        const data = this.shapes.get(shapeId);
+        const data = this.activeShapes.get(shapeId);
 
         if (data) {
             data.animation.stop();
             data.node.destroy();
-            this.shapes.delete(shapeId);
+            this.activeShapes.delete(shapeId);
         }
     }
 }
