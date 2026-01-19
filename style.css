@@ -60,3 +60,7 @@ input {
         max-width: 150px;
     }
 }
+
+button {
+    max-width: 50px;
+}
