@@ -10,14 +10,15 @@ const defaultDimensions = {
 export class KonvaService {
     constructor() {
 
-         // Control variables
+        // Control variables
         this.gravity = { acceleration: 19 }; // gravity must be passed as a reference to alter animations mid-run
         this.spawnRate = 1;
 
-        setTimeout(() => {
-            this.createEvent('gravity', { value: this.gravity.acceleration });
-            this.createEvent('spawnRate', { value: this.spawnRate });
-        }, 500);
+        this.createEvent('initial_values', {
+            surfaceArea: defaultDimensions.width * defaultDimensions.height,
+            spawnRate: this.spawnRate,
+            gravity: this.gravity.acceleration,
+        });
 
         this.stage = new Konva.Stage({
             container: 'konva-container',

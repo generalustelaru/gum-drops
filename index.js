@@ -1,5 +1,12 @@
 import { KonvaService } from "./KonvaService.js"
 
+window.addEventListener('initial_values', (event) => {
+    const { surfaceArea, spawnRate, gravity } = event.detail;
+    document.querySelector('#surface-area').value = surfaceArea || 0;
+    document.querySelector('#spawn-rate').value = spawnRate || 0;
+    document.querySelector('#gravity').value = gravity || 0;
+});
+
 const konva = new KonvaService();
 
 document.querySelector('#increase-spawn-rate').addEventListener('click', () => {
