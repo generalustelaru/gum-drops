@@ -80,31 +80,31 @@ export class KonvaService {
     }
 
     increaseRate() {
-        if (this.spawnRate < 10) {
+        if (this.spawnRate < 10)
             this.spawnRate += 1;
-            this.createEvent('spawnRate', { value: this.spawnRate });
-        }
+
+        return this.spawnRate;
     }
 
     decreaseRate() {
-        if (this.spawnRate > 0) {
+        if (this.spawnRate > 0)
             this.spawnRate -= 1;
-            this.createEvent('spawnRate', { value: this.spawnRate });
-        }
+
+        return this.spawnRate;
     }
 
     increaseGravity() {
-        if (this.gravity.acceleration < 99) {
+        if (this.gravity.acceleration < 99)
             this.gravity.acceleration += 1;
-            this.createEvent('gravity', { value: this.gravity.acceleration });
-        }
+
+        return this.gravity.acceleration;
     }
 
     decreaseGravity() {
-        if (this.gravity.acceleration > 0) {
+        if (this.gravity.acceleration > 0)
             this.gravity.acceleration -= 1;
-            this.createEvent('gravity', { value: this.gravity.acceleration });
-        }
+
+        return this.gravity.acceleration;
     }
 
     createEvent(type, detailObject) {
