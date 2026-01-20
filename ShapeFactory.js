@@ -1,37 +1,37 @@
 const types = [
-    { type: 'circular', kind: 'circle' },
-    { type: 'circular', kind: 'elipsoid' },
-    { type: 'polygonal', kind: 'triangle' },
-    { type: 'polygonal', kind: 'square' },
-    { type: 'polygonal', kind: 'pentagon' },
-    { type: 'polygonal', kind: 'hexagon' },
-    { type: 'star', kind: 'three-point' },
-    { type: 'star', kind: 'four-point' },
+    { type: 'ellipse', kind: 'circle' },
+    { type: 'ellipse', kind: 'elipsoid' },
+    { type: 'polygon', kind: 'triangle' },
+    { type: 'polygon', kind: 'square' },
+    { type: 'polygon', kind: 'pentagon' },
+    { type: 'polygon', kind: 'hexagon' },
+    { type: 'star', kind: 'jack' },
+    { type: 'star', kind: 'cross' },
     { type: 'star', kind: 'pentagram' },
     { type: 'star', kind: 'hexagram' },
 ];
 
 const colors = [
-  '#FF0000', // Red
-  '#FF4500', // Orange Red
-  '#FF8C00', // Dark Orange
-  '#FFD700', // Gold
-  '#FFFF00', // Yellow
-  '#ADFF2F', // Yellow Green
-  '#7FFF00', // Chartreuse
-  '#00FF00', // Lime Green
-  '#00FF7F', // Spring Green
-  '#00FFFF', // Cyan
-  '#00BFFF', // Deep Sky Blue
-  '#0080FF', // Blue
-  '#0000FF', // Pure Blue
-  '#4B0082', // Indigo
-  '#8B00FF', // Violet
-  '#9400D3', // Dark Violet
-  '#FF00FF', // Magenta
-  '#FF1493', // Deep Pink
-  '#FF69B4', // Hot Pink
-  '#FF6347'  // Tomato (back to red)
+    '#FF0000', // Red
+    '#FF4500', // Orange Red
+    '#FF8C00', // Dark Orange
+    '#FFD700', // Gold
+    '#FFFF00', // Yellow
+    '#ADFF2F', // Yellow Green
+    '#7FFF00', // Chartreuse
+    '#00FF00', // Lime Green
+    '#00FF7F', // Spring Green
+    '#00FFFF', // Cyan
+    '#00BFFF', // Deep Sky Blue
+    '#0080FF', // Blue
+    '#0000FF', // Pure Blue
+    '#4B0082', // Indigo
+    '#8B00FF', // Violet
+    '#9400D3', // Dark Violet
+    '#FF00FF', // Magenta
+    '#FF1493', // Deep Pink
+    '#FF69B4', // Hot Pink
+    '#FF6347'  // Tomato (back to red)
 ];
 
 export class ShapeFactory {
@@ -47,9 +47,9 @@ export class ShapeFactory {
 
         const shape = (() => {
             switch (type) {
-                case 'circular':
+                case 'ellipse':
                     return this.getEllipse(Konva, kind, this.stage.width(), coordinates);
-                case 'polygonal':
+                case 'polygon':
                     return this.getRegularPolygon(Konva, kind, this.stage.width(), coordinates);
                 case 'star':
                     return this.getStar(Konva, kind, this.stage.width(), coordinates);
@@ -115,13 +115,13 @@ export class ShapeFactory {
             x: this.getValidX(coordinates.x, width),
             y: coordinates.y,
             numPoints: (() => { switch (kind) {
-                case 'three-point': return 3;
-                case 'four-point': return 4;
+                case 'jack': return 3;
+                case 'cross': return 4;
                 case 'pentagram': return 5;
                 case 'hexagram': return 6;
                 default: return 8;
             } })(),
-            innerRadius: kind == 'three-point' ? 6 : 13,
+            innerRadius: kind == 'jack' ? 6 : 13,
             outerRadius: 25,
         });
     }
@@ -131,6 +131,6 @@ export class ShapeFactory {
     }
 
     getValidX(x, width) {
-        return Math.max(Math.min(x, width - 25), 25)
+        return Math.max(25, Math.min(x, width - 25))
     }
 }
