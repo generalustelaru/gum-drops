@@ -54,12 +54,9 @@ export class ShapeHandler {
         if (this.shapeReserve.length < 10)
             this.spawnShapes(gravity);
 
-        if (
-            (gravity.acceleration == 0 && !coordinates)
-            || this.activeShapes.size > 200
-        ) {
+        // Only proceed if user created or shape can descend
+        if (gravity.acceleration == 0 && !coordinates)
             return;
-        }
 
         const { shapeId, shapeData } = (() => {
             if (coordinates) {
