@@ -36,7 +36,7 @@ export class KonvaService {
             Konva,
             this.stage,
             creationLayer,
-            (position) => shapeHandler.releaseShape(this.gravity, position),
+            (position) => shapeHandler.spawnUserOrderedShape(this.gravity, position),
         );
 
         // Auto-logic

@@ -49,30 +49,28 @@ export class ShapeHandler {
         this.shapeReserve.push(...batch);
     }
 
-    releaseShape(gravity, coordinates) {
+    releaseShape(gravity) {
 
         if (this.shapeReserve.length < 10)
             this.spawnShapes(gravity);
 
-        // Only proceed if user created or shape can descend
-        if (gravity.acceleration == 0 && !coordinates)
+        // Only release if shape can descend
+        if (gravity.acceleration == 0)
             return;
 
-        const { shapeId, shapeData } = (() => {
-            if (coordinates) {
-                const shapeId = this.incrementalShapeId++;
-                const shapeData = this.factory.produceShapeData(
+        const { shapeId, shapeData } = this.shapeReserve.shift();
+        this.activeShapes.set(shapeId, shapeData);
+        shapeData.animation.start();
+    }
+
+    spawnUserOrderedShape(gravity, coordinates) {
+        const shapeId = this.incrementalShapeId++;
+        const shapeData = this.factory.produceShapeData(
                     shapeId,
                     coordinates,
                     gravity,
                 );
                 this.group.add(shapeData.node);
-
-                return { shapeId, shapeData }
-            }
-
-            return this.shapeReserve.shift();
-        })();
 
         this.activeShapes.set(shapeId, shapeData);
         shapeData.animation.start();
