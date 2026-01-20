@@ -1,6 +1,6 @@
 export class CreationSurface {
 
-    constructor(Konva, stage, layer, positionCallback) {
+    constructor(stage, layer, positionCallback) {
         const dimensions = {
             width: stage.width(),
             height: stage.height(),

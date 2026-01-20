@@ -29,11 +29,10 @@ export class KonvaService {
         const [ creationLayer, shapesLayer ] = this.stage.getLayers();
 
         // Draws shapes and handle their lifetime
-        const shapeHandler = new ShapeHandler(Konva, this.stage, shapesLayer);
+        const shapeHandler = new ShapeHandler(this.stage, shapesLayer);
 
         // Catches click and orders a spawn
         new CreationSurface(
-            Konva,
             this.stage,
             creationLayer,
             (position) => shapeHandler.spawnUserOrderedShape(this.gravity, position),

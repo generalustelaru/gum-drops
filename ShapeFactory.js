@@ -35,8 +35,7 @@ const colors = [
 ];
 
 export class ShapeFactory {
-    constructor(Konva, stage, layer, destructionCallback) {
-        this.Konva = Konva;
+    constructor(stage, layer, destructionCallback) {
         this.stage = stage;
         this.layer = layer;
         this.destroy = destructionCallback;
@@ -48,11 +47,11 @@ export class ShapeFactory {
         const shape = (() => {
             switch (type) {
                 case 'ellipse':
-                    return this.getEllipse(Konva, kind, this.stage.width(), coordinates);
+                    return this.getEllipse(kind, this.stage.width(), coordinates);
                 case 'polygon':
-                    return this.getRegularPolygon(Konva, kind, this.stage.width(), coordinates);
+                    return this.getRegularPolygon(kind, this.stage.width(), coordinates);
                 case 'star':
-                    return this.getStar(Konva, kind, this.stage.width(), coordinates);
+                    return this.getStar(kind, this.stage.width(), coordinates);
                 default:
                     throw new Error(`Cannot determine type: [${type}]`);
             }
@@ -79,7 +78,7 @@ export class ShapeFactory {
         }
     }
 
-    getEllipse(Konva, kind, width, coordinates) {
+    getEllipse(kind, width, coordinates) {
 
         return new Konva.Ellipse({
             fill: this.getColor(),
@@ -90,7 +89,7 @@ export class ShapeFactory {
         });
     }
 
-    getRegularPolygon(Konva, kind, width, coordinates) {
+    getRegularPolygon(kind, width, coordinates) {
 
         return new Konva.RegularPolygon({
             fill: this.getColor(),
@@ -108,7 +107,7 @@ export class ShapeFactory {
         });
     }
 
-    getStar(Konva, kind, width, coordinates) {
+    getStar(kind, width, coordinates) {
 
         return new Konva.Star({
             fill: this.getColor(),
